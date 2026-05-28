@@ -1,0 +1,39 @@
+# Speedtest - root .htaccess
+# Front-Controller-Pattern: alles, was kein existierendes File ist, geht an index.php.
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # Sicherheit: sensible Pfade hart blocken
+    RewriteRule ^(lib|views|data|bin)(/|$) - [F,L]
+    RewriteRule ^config\.php$           - [F,L]
+
+    # Existierende Dateien (Assets, Blobs) direkt liefern
+    RewriteCond %{REQUEST_FILENAME} -f [OR]
+    RewriteCond %{REQUEST_FILENAME} -d
+    RewriteRule ^ - [L]
+
+    # Alles andere ans Front-Controller
+    RewriteRule ^ index.php [QSA,L]
+</IfModule>
+
+# Random-Daten profitieren nicht von gzip; Kompression würde die Messung verfälschen.
+<IfModule mod_deflate.c>
+    SetEnvIfNoCase Request_URI "^/api/download" no-gzip dont-vary
+    SetEnvIfNoCase Request_URI "^/blob/"        no-gzip dont-vary
+</IfModule>
+
+<IfModule mod_headers.c>
+    <FilesMatch "\.bin$">
+        Header set Cache-Control "no-store, no-cache, must-revalidate, max-age=0"
+        Header set Pragma "no-cache"
+    </FilesMatch>
+</IfModule>
+
+# PHP-Limits für den Upload (post_max_size etc. müssen auf PHP-Profil-Ebene gesetzt werden,
+# .htaccess kann das nur bei mod_php — auf Web Station/FPM wird das ignoriert.)
+<IfModule mod_php.c>
+    php_value upload_max_filesize 32M
+    php_value post_max_size       32M
+    php_value max_execution_time  60
+</IfModule>

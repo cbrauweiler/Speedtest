@@ -1,0 +1,10 @@
+/data/*.sqlite
+/data/*.sqlite-journal
+/data/*.sqlite-wal
+/data/*.sqlite-shm
+/blob/*.bin
+/config.local.php
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
