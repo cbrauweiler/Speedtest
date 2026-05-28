@@ -33,9 +33,13 @@ Browser-seitig wird ein moderner Browser mit `fetch` + Streams vorausgesetzt
 ```bash
 git clone https://github.com/cbrauweiler/Speedtest.git speedtest
 cd speedtest
-cp config.local.example.php config.local.php
-# Salt setzen, evtl. base_path anpassen
+cp config.example.php config.php
+# config.php anpassen — mindestens ip_hash_salt setzen
 ```
+
+`config.php` ist gitignored und wird pro Deployment einzeln gepflegt.
+`config.example.php` ist das mitgelieferte Template mit allen verfügbaren
+Schlüsseln und ihren Defaults.
 
 Anschließend den Ordner unter dem Web-Server erreichbar machen:
 
@@ -61,18 +65,20 @@ ausliefern kann.
 
 ## Konfiguration
 
-`config.php` enthält die Defaults, lokale Overrides gehören in
-`config.local.php` (gitignored):
+Alle einstellbaren Schlüssel stehen in `config.example.php`. Nach dem Kopieren
+nach `config.php` werden sie wirksam:
 
-| Schlüssel | Bedeutung |
-|---|---|
-| `app_name` | Anzeigename im Header |
-| `app_version` | Versionsnummer im Footer |
-| `repo_url` | Link zum Quellcode (Footer) |
-| `base_path` | URL-Präfix, falls die App nicht im Root liegt (z.B. `/tools/speedtest`) |
-| `allowed_sizes` | erlaubte Download-Größen in MB |
-| `history_limit` | Anzahl Einträge unter `/history` |
-| `ip_hash_salt` | Salt für Client-Hash, **unbedingt überschreiben** |
+| Schlüssel | Default | Bedeutung |
+|---|---|---|
+| `app_name` | `Speedtest` | Anzeigename in Header und Footer |
+| `app_version` | `0.1.0` | Versionsnummer im Footer |
+| `repo_url` | `''` | Link zum Quellcode (Footer-Button, leer = ausgeblendet) |
+| `db_path` | `data/speedtest.sqlite` | Pfad zur SQLite-Datei (Auto-erzeugt) |
+| `blob_dir` | `blob/` | Verzeichnis für optionale Static-Blobs |
+| `allowed_sizes` | `[2, 5, 10, 25, 50, 100]` | erlaubte Download-Größen in MB (Whitelist) |
+| `history_limit` | `100` | Anzahl Einträge unter `/history` |
+| `ip_hash_salt` | `CHANGE-ME-…` | Salt für Client-IP-Hash — **unbedingt überschreiben** |
+| `base_path` | `''` | URL-Präfix, falls App nicht im Root liegt (z.B. `/tools/speedtest`) |
 
 ## Optische Anpassung
 

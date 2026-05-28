@@ -3,6 +3,7 @@
 /data/*.sqlite-wal
 /data/*.sqlite-shm
 /blob/*.bin
+/config.php
 /config.local.php
 .idea/
 .vscode/

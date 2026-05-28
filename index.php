@@ -6,10 +6,14 @@ require __DIR__ . '/lib/helpers.php';
 require __DIR__ . '/lib/db.php';
 require __DIR__ . '/lib/routes.php';
 
-$config = require __DIR__ . '/config.php';
-if (is_file(__DIR__ . '/config.local.php')) {
-    $config = array_merge($config, require __DIR__ . '/config.local.php');
+$configPath = __DIR__ . '/config.php';
+if (!is_file($configPath)) {
+    http_response_code(500);
+    header('Content-Type: text/plain; charset=utf-8');
+    echo "Konfiguration fehlt. Bitte 'config.example.php' nach 'config.php' kopieren und anpassen.\n";
+    exit;
 }
+$config = require $configPath;
 $GLOBALS['config'] = $config;
 
 // Pfad ohne Base-Path & Query
