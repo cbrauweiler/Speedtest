@@ -8,7 +8,7 @@
         </p>
     </div>
 
-    <div class="rounded-xl border border-line bg-surface p-5 space-y-5 shadow-sm">
+    <div class="glass p-5 space-y-5">
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <div id="g-ping" class="gauge-wrap gauge-ping">
                 <div class="gauge-text">
@@ -44,16 +44,15 @@
                    type="text"
                    maxlength="80"
                    placeholder="Optionales Label (z.B. 'Wohnzimmer LAN')"
-                   class="flex-1 min-w-[12rem] bg-bg border border-line rounded px-3 py-2 text-sm focus:outline-none focus:border-accent">
-            <button id="m-start"
-                    class="px-5 py-2 rounded bg-accent hover:opacity-90 text-white font-medium">
+                   class="input flex-1 min-w-[12rem]">
+            <button id="m-start" class="btn-primary">
                 Test starten
             </button>
         </div>
     </div>
 
-    <div id="m-result" class="hidden rounded-xl border border-accent bg-accent-soft text-accent-ink p-4 text-sm">
+    <div id="m-result" class="hidden glass p-4 text-sm" style="border-color:var(--accent);">
         Ergebnis gespeichert. Link:
-        <a id="m-result-link" href="#" class="underline font-medium"></a>
+        <a id="m-result-link" href="#" class="underline font-medium text-accent"></a>
     </div>
 </section>

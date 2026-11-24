@@ -1,85 +1,353 @@
 /*
- * Theme-Definition für den Speedtest.
+ * Speedtest – Theme nach Vorbild Subspace-Lab.dev
  * Alle Farben sind CSS-Variablen. Anpassen = unten Werte editieren.
  *
- * Es gibt zwei Modi:
- *   :root              -> Light (default)
- *   :root[data-theme="dark"] -> Dark
+ * Modi:
+ *   :root                       -> Light (default)
+ *   :root[data-theme="dark"]    -> Dark
  *
- * Tailwind ist in views/layout.php so konfiguriert, dass die Utility-
- * Klassen `bg-surface`, `text-ink`, `border-line` etc. auf diese
- * Variablen zeigen.
+ * Tailwind-Utility-Klassen sind in views/layout.php auf diese Variablen
+ * verdrahtet (bg-surface, text-ink, border-line, bg-accent ...).
  */
 
 :root {
-    /* Light */
-    --bg:           #f6f7fb;
-    --surface:      #ffffff;
-    --surface-2:    #f1f3f9;
-    --line:         #e2e6ee;
-    --ink:          #0f172a;
-    --ink-muted:    #475569;
-    --ink-subtle:   #94a3b8;
-    --accent:       #059669;     /* emerald-600 */
-    --accent-soft:  #d1fae5;
-    --accent-ink:   #064e3b;
-    --danger:       #be123c;
-    --danger-soft:  #ffe4e6;
-    /* Gauge-Farben pro Messwert */
-    --gauge-ping:   #d97706;     /* amber-600 */
-    --gauge-down:   #0284c7;     /* sky-600 */
-    --gauge-up:     #7c3aed;     /* violet-600 */
+    /* ---- Light ---- */
+    --bg:            #eef3fb;
+    --bg-soft:       #f6f8fc;
+    --surface:       rgba(255,255,255,0.72);
+    --surface-solid: #ffffff;
+    --surface-2:     #eef2f9;
+    --line:          rgba(15,23,42,0.08);
+    --line-strong:   rgba(15,23,42,0.14);
+    --ink:           #0f172a;
+    --ink-muted:     #475569;
+    --ink-subtle:    #8794ad;
+    --accent:        #2563eb;     /* blue-600  */
+    --accent-2:      #0d9488;     /* teal-600  */
+    --accent-soft:   rgba(37,99,235,0.10);
+    --accent-ink:    #1e40af;
+    --danger:        #be123c;
+    --danger-soft:   #ffe4e6;
+
+    /* Gauge-Farben */
+    --gauge-ping:    #d97706;     /* amber-600  */
+    --gauge-down:    #0284c7;     /* sky-600    */
+    --gauge-up:      #7c3aed;     /* violet-600 */
+
+    /* FX */
+    --aurora-a: rgba(37,99,235,0.14);
+    --aurora-b: rgba(13,148,136,0.12);
+    --aurora-c: rgba(139,92,246,0.10);
+    --grid-ink: rgba(37,99,235,0.08);
+    --spot-ink: rgba(37,99,235,0.18);
+    --glass-border: rgba(255,255,255,0.65);
+    --glass-highlight: rgba(255,255,255,0.75);
+    --glass-shadow: 0 10px 30px rgba(15,23,42,0.08), inset 0 1px 0 var(--glass-highlight);
 }
 
 :root[data-theme="dark"] {
-    --bg:           #0b1120;
-    --surface:      #111827;
-    --surface-2:    #1f2937;
-    --line:         #1f2937;
-    --ink:          #e2e8f0;
-    --ink-muted:    #94a3b8;
-    --ink-subtle:   #64748b;
-    --accent:       #10b981;     /* emerald-500 */
-    --accent-soft:  #052e25;
-    --accent-ink:   #a7f3d0;
-    --danger:       #f43f5e;
-    --danger-soft:  #3f1622;
-    /* Gauge-Farben (hellere Varianten für dunklen Hintergrund) */
-    --gauge-ping:   #fbbf24;     /* amber-400 */
-    --gauge-down:   #38bdf8;     /* sky-400 */
-    --gauge-up:     #a78bfa;     /* violet-400 */
+    /* ---- Dark ---- */
+    --bg:            #0a0c10;
+    --bg-soft:       #0f1218;
+    --surface:       rgba(22,27,36,0.55);
+    --surface-solid: #161b24;
+    --surface-2:     #1c2333;
+    --line:          rgba(255,255,255,0.08);
+    --line-strong:   rgba(99,179,255,0.22);
+    --ink:           #e8edf5;
+    --ink-muted:     #8b9ab3;
+    --ink-subtle:    #5a6a82;
+    --accent:        #3b9eff;
+    --accent-2:      #00d4aa;
+    --accent-soft:   rgba(59,158,255,0.12);
+    --accent-ink:    #a7d8ff;
+    --danger:        #f43f5e;
+    --danger-soft:   rgba(244,63,94,0.12);
+
+    --gauge-ping:    #fbbf24;     /* amber-400  */
+    --gauge-down:    #38bdf8;     /* sky-400    */
+    --gauge-up:      #a78bfa;     /* violet-400 */
+
+    --aurora-a: rgba(59,158,255,0.14);
+    --aurora-b: rgba(0,212,170,0.12);
+    --aurora-c: rgba(123,97,255,0.12);
+    --grid-ink: rgba(99,179,255,0.05);
+    --spot-ink: rgba(59,158,255,0.22);
+    --glass-border: rgba(255,255,255,0.09);
+    --glass-highlight: rgba(255,255,255,0.07);
+    --glass-shadow: 0 10px 34px rgba(0,0,0,0.40), inset 0 1px 0 var(--glass-highlight);
 }
 
-/* Body-Grundton */
+/* ===================================================================
+   Basis
+   =================================================================== */
+*, *::before, *::after { box-sizing: border-box; }
+
 html, body {
     background-color: var(--bg);
     color: var(--ink);
+    min-height: 100%;
+}
+
+body {
+    position: relative;
+    font-family: 'Inter', ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+    overflow-x: hidden;
 }
 
 .mono {
     font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
 }
 
-/* Smooth-Transitions beim Theme-Wechsel */
-* {
-    transition: background-color 120ms ease, border-color 120ms ease, color 120ms ease;
+/* Theme-Transition sauber begrenzen (NICHT auf *, sonst flackert Mouse-Spot). */
+html, body,
+.glass, .nav-btn, .pill, .gauge-track, .gauge-arc,
+header, main, footer {
+    transition:
+        background-color 180ms ease,
+        border-color 180ms ease,
+        color 180ms ease,
+        box-shadow 180ms ease;
 }
 
-/* Gauges (SVG-Halbkreise im Ookla-Stil). Struktur wird in speedtest.js erzeugt.
- * Pro Gauge wird über die Klasse .gauge-ping/.gauge-down/.gauge-up eine
- * eigene Farbe gesetzt (--gauge-color), die der Arc übernimmt. */
-.gauge-wrap {
-    position: relative;
+/* ===================================================================
+   Hintergrund-Ebenen (fixed, hinter dem Content)
+   =================================================================== */
+
+/* Aurora: weiche Farbwolken ganz hinten */
+#aurora {
+    position: fixed;
+    inset: -15% -10% auto -10%;
+    height: 85vh;
+    z-index: -3;
+    pointer-events: none;
+    background:
+        radial-gradient(38% 46% at 22% 28%, var(--aurora-a), transparent 70%),
+        radial-gradient(42% 52% at 78% 20%, var(--aurora-b), transparent 70%),
+        radial-gradient(40% 50% at 55% 60%, var(--aurora-c), transparent 70%);
+    filter: blur(38px);
+    -webkit-mask-image: linear-gradient(to bottom, #000 0%, rgba(0,0,0,0.45) 55%, transparent 92%);
+            mask-image: linear-gradient(to bottom, #000 0%, rgba(0,0,0,0.45) 55%, transparent 92%);
+    animation: auroraDrift 22s ease-in-out infinite alternate;
 }
+@keyframes auroraDrift {
+    0%   { transform: translate3d(0,0,0) scale(1); }
+    100% { transform: translate3d(0,-18px,0) scale(1.06); }
+}
+
+/* Site-FX: feines Grid + sanfter Oberseiten-Gradient, mit Maus-Parallax */
+#site-fx {
+    position: fixed;
+    inset: -40px;
+    z-index: -2;
+    pointer-events: none;
+    opacity: var(--fx-op, 1);
+    transform: translate3d(var(--fx-x, 0), var(--fx-y, 0), 0);
+    transition: opacity 400ms ease;
+}
+#site-fx::before {
+    /* Gradient-Haube oben */
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+        radial-gradient(1200px 620px at 50% -8%, var(--aurora-a), transparent 70%),
+        radial-gradient(900px  520px at 82% 2%,  var(--aurora-b), transparent 70%);
+    -webkit-mask-image: linear-gradient(to bottom, #000 0%, rgba(0,0,0,0.55) 45%, transparent 90%);
+            mask-image: linear-gradient(to bottom, #000 0%, rgba(0,0,0,0.55) 45%, transparent 90%);
+}
+#site-fx::after {
+    /* Grid-Pattern */
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+        linear-gradient(var(--grid-ink) 1px, transparent 1px),
+        linear-gradient(90deg, var(--grid-ink) 1px, transparent 1px);
+    background-size: 46px 46px;
+    -webkit-mask-image: radial-gradient(1200px 640px at 50% 0%, #000, transparent 80%);
+            mask-image: radial-gradient(1200px 640px at 50% 0%, #000, transparent 80%);
+    animation: gridDrift 60s linear infinite;
+}
+@keyframes gridDrift {
+    from { background-position: 0 0, 0 0; }
+    to   { background-position: 46px 46px, 46px 46px; }
+}
+
+/* Mouse-Spotlight: folgt dem Cursor */
+#mouse-spot {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background: radial-gradient(
+        360px 360px at var(--mx, 50%) var(--my, 50%),
+        var(--spot-ink),
+        transparent 65%
+    );
+    mix-blend-mode: screen;
+    transition: opacity 300ms ease;
+}
+:root:not([data-theme="dark"]) #mouse-spot {
+    mix-blend-mode: multiply;
+    opacity: 0.6;
+}
+@media (prefers-reduced-motion: reduce) {
+    #aurora, #site-fx::after { animation: none; }
+    #mouse-spot { display: none; }
+}
+@media (hover: none), (pointer: coarse) {
+    #mouse-spot { display: none; }
+}
+
+/* Noise-Overlay */
+#grain {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    opacity: 0.045;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    mix-blend-mode: overlay;
+}
+:root:not([data-theme="dark"]) #grain { opacity: 0.025; }
+
+/* ===================================================================
+   Schwebender Topbar
+   =================================================================== */
+#topbar {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    padding: 14px 16px 10px;
+    background: transparent;
+}
+.topbar-inner {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 56px;
+    padding: 8px 12px 8px 16px;
+    border-radius: 18px;
+    background: var(--surface);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--glass-shadow);
+    backdrop-filter: blur(14px) saturate(1.4);
+    -webkit-backdrop-filter: blur(14px) saturate(1.4);
+}
+.topbar-brand {
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-right: auto;
+}
+.topbar-brand .bolt {
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    -webkit-background-clip: text;
+            background-clip: text;
+    color: transparent;
+    font-size: 1.25em;
+    line-height: 1;
+}
+
+/* ===================================================================
+   Nav-Buttons (im schwebenden Balken)
+   =================================================================== */
+.nav-btn {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.4rem 0.85rem;
+    border: 1px solid transparent;
+    border-radius: 10px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--ink-muted);
+    background-color: transparent;
+    text-decoration: none;
+    cursor: pointer;
+}
+.nav-btn:hover {
+    color: var(--ink);
+    background-color: var(--surface-2);
+    border-color: var(--line);
+}
+.nav-btn.is-active {
+    color: var(--accent);
+    background-color: var(--accent-soft);
+    border-color: var(--line-strong);
+}
+
+/* ===================================================================
+   Glas-Karten
+   =================================================================== */
+.glass {
+    background: var(--surface);
+    border: 1px solid var(--glass-border);
+    border-radius: 18px;
+    box-shadow: var(--glass-shadow);
+    backdrop-filter: blur(12px) saturate(1.3);
+    -webkit-backdrop-filter: blur(12px) saturate(1.3);
+}
+
+/* Primary-Button */
+.btn-primary {
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    color: #fff;
+    border: none;
+    padding: 0.55rem 1.2rem;
+    border-radius: 10px;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.18);
+    transition: filter 160ms ease, transform 160ms ease;
+}
+.btn-primary:hover { filter: brightness(1.08); transform: translateY(-1px); }
+.btn-primary:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+.btn-ghost {
+    background: var(--surface-2);
+    color: var(--ink);
+    border: 1px solid var(--line);
+    padding: 0.5rem 1rem;
+    border-radius: 10px;
+    font-weight: 500;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+}
+.btn-ghost:hover { border-color: var(--line-strong); }
+
+/* Input */
+.input {
+    background: var(--surface-2);
+    color: var(--ink);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 0.55rem 0.9rem;
+    font-size: 0.9rem;
+    outline: none;
+    transition: border-color 160ms ease, box-shadow 160ms ease;
+}
+.input:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-soft);
+}
+.input::placeholder { color: var(--ink-subtle); }
+
+/* ===================================================================
+   Gauges (werden von speedtest.js befüllt)
+   =================================================================== */
+.gauge-wrap { position: relative; }
 .gauge-ping { --gauge-color: var(--gauge-ping); }
 .gauge-down { --gauge-color: var(--gauge-down); }
 .gauge-up   { --gauge-color: var(--gauge-up); }
 
-.gauge-svg {
-    display: block;
-    width: 100%;
-    height: auto;
-}
+.gauge-svg { display: block; width: 100%; height: auto; }
 .gauge-track {
     fill: none;
     stroke: var(--surface-2);
@@ -91,13 +359,10 @@ html, body {
     stroke: var(--gauge-color, var(--accent));
     stroke-width: 16;
     stroke-linecap: round;
-    transition: stroke-dashoffset 250ms ease;
+    filter: drop-shadow(0 0 6px color-mix(in oklab, var(--gauge-color), transparent 55%));
+    transition: stroke-dashoffset 260ms ease;
 }
-.gauge-tick {
-    stroke: var(--ink-subtle);
-    stroke-width: 1.5;
-    opacity: 0.7;
-}
+.gauge-tick { stroke: var(--ink-subtle); stroke-width: 1.5; opacity: 0.6; }
 .gauge-tick-label {
     fill: var(--ink-muted);
     font-size: 13px;
@@ -113,45 +378,33 @@ html, body {
     pointer-events: none;
     width: 80%;
 }
-.gauge-label {
-    font-size: 11px;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    color: var(--ink-muted);
-}
-.gauge-value {
-    font-size: 2.25rem;
-    font-weight: 600;
-    line-height: 1.1;
-    margin-top: 0.15rem;
-    color: var(--ink);
-}
-.gauge-unit {
-    font-size: 11px;
-    color: var(--ink-subtle);
-    margin-top: 0.15rem;
-}
+.gauge-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink-muted); }
+.gauge-value { font-size: 2.25rem; font-weight: 700; line-height: 1.1; margin-top: 0.15rem; color: var(--ink); font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+.gauge-unit  { font-size: 11px; color: var(--ink-subtle); margin-top: 0.15rem; }
 
-/* Nav-Buttons im Header */
-.nav-btn {
-    display: inline-flex;
-    align-items: center;
-    padding: 0.4rem 0.85rem;
-    border: 1px solid var(--line);
-    border-radius: 0.5rem;
+/* ===================================================================
+   Tabelle (History)
+   =================================================================== */
+.table-glass {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
     font-size: 0.875rem;
-    font-weight: 500;
+}
+.table-glass thead th {
+    text-align: left;
+    padding: 0.65rem 1rem;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
     color: var(--ink-muted);
-    background-color: var(--surface);
-    text-decoration: none;
+    border-bottom: 1px solid var(--line);
+    background: var(--surface-2);
 }
-.nav-btn:hover {
-    color: var(--ink);
-    border-color: var(--accent);
-    background-color: var(--surface-2);
+.table-glass tbody td {
+    padding: 0.65rem 1rem;
+    border-bottom: 1px solid var(--line);
 }
-.nav-btn.is-active {
-    color: var(--accent-ink);
-    border-color: var(--accent);
-    background-color: var(--accent-soft);
-}
+.table-glass tbody tr:last-child td { border-bottom: none; }
+.table-glass tbody tr:hover td { background: var(--surface-2); }
