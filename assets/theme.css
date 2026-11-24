@@ -38,8 +38,8 @@
     --aurora-a: rgba(37,99,235,0.14);
     --aurora-b: rgba(13,148,136,0.12);
     --aurora-c: rgba(139,92,246,0.10);
-    --grid-ink: rgba(37,99,235,0.08);
-    --spot-ink: rgba(37,99,235,0.18);
+    --grid-ink: rgba(37,99,235,0.14);
+    --spot-ink: rgba(37,99,235,0.14);
     --glass-border: rgba(255,255,255,0.65);
     --glass-highlight: rgba(255,255,255,0.75);
     --glass-shadow: 0 10px 30px rgba(15,23,42,0.08), inset 0 1px 0 var(--glass-highlight);
@@ -71,8 +71,8 @@
     --aurora-a: rgba(59,158,255,0.14);
     --aurora-b: rgba(0,212,170,0.12);
     --aurora-c: rgba(123,97,255,0.12);
-    --grid-ink: rgba(99,179,255,0.05);
-    --spot-ink: rgba(59,158,255,0.22);
+    --grid-ink: rgba(99,179,255,0.10);
+    --spot-ink: rgba(59,158,255,0.38);
     --glass-border: rgba(255,255,255,0.09);
     --glass-highlight: rgba(255,255,255,0.07);
     --glass-shadow: 0 10px 34px rgba(0,0,0,0.40), inset 0 1px 0 var(--glass-highlight);
@@ -135,10 +135,11 @@ header, main, footer {
     100% { transform: translate3d(0,-18px,0) scale(1.06); }
 }
 
-/* Site-FX: feines Grid + sanfter Oberseiten-Gradient, mit Maus-Parallax */
+/* Site-FX: feines Grid + sanfter Oberseiten-Gradient, mit Maus-Parallax.
+   inset auf 0 vh sorgt dafuer dass das Grid die volle Viewport-Hoehe fuellt. */
 #site-fx {
     position: fixed;
-    inset: -40px;
+    inset: 0;
     z-index: -2;
     pointer-events: none;
     opacity: var(--fx-op, 1);
@@ -149,7 +150,7 @@ header, main, footer {
     /* Gradient-Haube oben */
     content: '';
     position: absolute;
-    inset: 0;
+    inset: -60px;
     background:
         radial-gradient(1200px 620px at 50% -8%, var(--aurora-a), transparent 70%),
         radial-gradient(900px  520px at 82% 2%,  var(--aurora-b), transparent 70%);
@@ -157,16 +158,16 @@ header, main, footer {
             mask-image: linear-gradient(to bottom, #000 0%, rgba(0,0,0,0.55) 45%, transparent 90%);
 }
 #site-fx::after {
-    /* Grid-Pattern */
+    /* Grid-Pattern - ueber die volle Hoehe sichtbar, am unteren Rand dezent ausfaden */
     content: '';
     position: absolute;
-    inset: 0;
+    inset: -60px;
     background-image:
         linear-gradient(var(--grid-ink) 1px, transparent 1px),
         linear-gradient(90deg, var(--grid-ink) 1px, transparent 1px);
-    background-size: 46px 46px;
-    -webkit-mask-image: radial-gradient(1200px 640px at 50% 0%, #000, transparent 80%);
-            mask-image: radial-gradient(1200px 640px at 50% 0%, #000, transparent 80%);
+    background-size: 48px 48px;
+    -webkit-mask-image: linear-gradient(to bottom, #000 0%, rgba(0,0,0,0.75) 70%, transparent 100%);
+            mask-image: linear-gradient(to bottom, #000 0%, rgba(0,0,0,0.75) 70%, transparent 100%);
     animation: gridDrift 60s linear infinite;
 }
 @keyframes gridDrift {
@@ -174,23 +175,27 @@ header, main, footer {
     to   { background-position: 46px 46px, 46px 46px; }
 }
 
-/* Mouse-Spotlight: folgt dem Cursor */
+/* Mouse-Spotlight: folgt dem Cursor. z-index UEBER dem Content, damit das
+   Highlight auch ueber den opaken Glas-Karten liegt; mix-blend-mode sorgt
+   dafuer dass es nicht als Fleck draufklebt, sondern alles darunter zart
+   aufhellt (dark) bzw. toent (light). pointer-events:none, also nie im Weg. */
 #mouse-spot {
     position: fixed;
     inset: 0;
-    z-index: -1;
+    z-index: 100;
     pointer-events: none;
     background: radial-gradient(
-        360px 360px at var(--mx, 50%) var(--my, 50%),
+        420px 420px at var(--mx, 50%) var(--my, 50%),
         var(--spot-ink),
         transparent 65%
     );
     mix-blend-mode: screen;
     transition: opacity 300ms ease;
+    will-change: background;
 }
 :root:not([data-theme="dark"]) #mouse-spot {
     mix-blend-mode: multiply;
-    opacity: 0.6;
+    opacity: 0.55;
 }
 @media (prefers-reduced-motion: reduce) {
     #aurora, #site-fx::after { animation: none; }
