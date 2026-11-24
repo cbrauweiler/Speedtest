@@ -14,7 +14,7 @@
     /* ---- Light ---- */
     --bg:            #eef3fb;
     --bg-soft:       #f6f8fc;
-    --surface:       rgba(255,255,255,0.55);
+    --surface:       rgba(255,255,255,0.85);
     --surface-solid: #ffffff;
     --surface-2:     #eef2f9;
     --line:          rgba(15,23,42,0.08);
@@ -49,7 +49,7 @@
     /* ---- Dark ---- */
     --bg:            #0a0c10;
     --bg-soft:       #0f1218;
-    --surface:       rgba(22,27,36,0.38);
+    --surface:       rgba(22,27,36,0.82);
     --surface-solid: #161b24;
     --surface-2:     #1c2333;
     --line:          rgba(255,255,255,0.08);
