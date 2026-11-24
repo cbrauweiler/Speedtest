@@ -11,7 +11,7 @@ return [
     'app_name'      => 'Speedtest',
 
     // Versionsnummer (erscheint im Footer).
-    'app_version'   => '0.2.2',
+    'app_version'   => '0.2.3',
 
     // Link zum Quellcode-Repo (Footer-Button). Leer lassen, um den Button
     // auszublenden.
